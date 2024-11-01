@@ -14,15 +14,15 @@ router.get('/', auth, async (req, res) => {
 });
 
 
-router.post('/', auth, async (req, res) => {
+router.post('/',  async (req, res) => {
+  res.send(hihi);
   try {
     const { name, position, salary, department } = req.body;
     const employee = new Employee({
       name,
       position,
       salary,
-      department,
-      createdBy: req.user.id
+      department
     });
     await employee.save();
     res.json(employee);
@@ -31,7 +31,7 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-// Update employee
+// Update 
 router.put('/:id', auth, async (req, res) => {
   try {
     const { name, position, salary, department } = req.body;
@@ -53,7 +53,7 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
-// Delete employee
+// Delete 
 router.delete('/:id', auth, async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);

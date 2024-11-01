@@ -16,14 +16,6 @@ const EmployeeSchema = new mongoose.Schema({
   department: {
     type: String,
     required: true
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
-  },
-  date: {
-    type: Date,
-    default: Date.now
   }
 });
 
