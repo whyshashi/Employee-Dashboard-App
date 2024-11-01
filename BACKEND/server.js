@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
+
 app.use('/auth', require('./routes/auth'));
 
 app.use('/employees',emprouter );

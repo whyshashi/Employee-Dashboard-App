@@ -6,7 +6,9 @@ const Employee = require('../models/Employee');
 
 router.get('/', auth, async (req, res) => {
   try {
-    const employees = await Employee.find({ createdBy: req.user.id });
+    // const employees = await Employee.find({ createdBy: req.user.id });
+
+    const employees = await Employee.find();
     res.json(employees);
   } catch (err) {
     res.status(500).send('Server Error');
@@ -14,8 +16,8 @@ router.get('/', auth, async (req, res) => {
 });
 
 
-router.post('/',  async (req, res) => {
-  res.send(hihi);
+router.post('/', auth,  async (req, res) => {
+  // res.send("hihi");
   try {
     const { name, position, salary, department } = req.body;
     const employee = new Employee({
@@ -29,40 +31,45 @@ router.post('/',  async (req, res) => {
   } catch (err) {
     res.status(500).send('Server Error');
   }
+  
 });
 
+
 // Update 
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id',auth, async (req, res) => {
   try {
     const { name, position, salary, department } = req.body;
     let employee = await Employee.findById(req.params.id);
     
     if (!employee) return res.status(404).json({ msg: 'Employee not found' });
-    if (employee.createdBy.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'Not authorized' });
-    }
+
 
     employee = await Employee.findByIdAndUpdate(
       req.params.id,
       { name, position, salary, department },
       { new: true }
     );
+  
+
     res.json(employee);
+
   } catch (err) {
     res.status(500).send('Server Error');
   }
+
 });
 
 // Delete 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id',auth,  async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);
+    // console.log(employee);
     if (!employee) return res.status(404).json({ msg: 'Employee not found' });
-    if (employee.createdBy.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'Not authorized' });
-    }
+    // if (employee.createdBy.toString() !== req.user.id) {
+    //   return res.status(401).json({ msg: 'Not authorized' });
+    // }
 
-    await Employee.findByIdAndRemove(req.params.id);
+    await Employee.findByIdAndDelete(req.params.id);
     res.json({ msg: 'Employee removed' });
   } catch (err) {
     res.status(500).send('Server Error');

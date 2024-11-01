@@ -5,11 +5,11 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 
-router.post('/register', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
+router.post('/register',  async (req, res) => {
 
-    // res.send(`${name},${email},${password}`);
+  try {
+        const { name, email, password } = req.body;
+
 
     let user = await User.findOne({ email });
     if (user) {
@@ -28,11 +28,13 @@ router.post('/register', async (req, res) => {
     await user.save().then(() => console.log('done done saved'));
     
 
-    const payload = {
-      user: {
-        id: user.id
-      }
-    };
+    // const payload = {
+    //   user: {
+    //     id: user.id
+    //   }
+    // };
+
+    const payload = {  email, password };
 
     jwt.sign(
       payload,
@@ -50,7 +52,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login User
+
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -64,12 +66,9 @@ router.post('/login', async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
+    
 
-    const payload = {
-      user: {
-        id: user.id
-      }
-    };
+    const payload = {  email, password };
 
 
     jwt.sign(
