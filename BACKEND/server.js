@@ -2,14 +2,13 @@ const express = require('express');
 const connectDB = require('./config/db');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const app = express();
 
 app.use(cors());
 
 const emprouter = require('./routes/employee');
 
 dotenv.config();
-const app = express();
-
 
 connectDB();
 
